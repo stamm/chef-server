@@ -24,6 +24,7 @@ class OmnitruckClient
   def initialize(node)
     @platform = node['platform_family'] == "rhel" ? "el" : node['platform']
     @platform_version = node['platform_family'] == "rhel" ? node['platform_version'].to_i : node['platform_version']
+    change_for_debian(node)
     @machine_architecture = node['kernel']['machine']
   end
 
@@ -59,4 +60,10 @@ class OmnitruckClient
     end
   end
 
+  def change_for_debian(node)
+    if node['platform_family'] == "debian"
+      @platform = "ubuntu"
+      @platform_version = '12.04'
+    end
+  end
 end
